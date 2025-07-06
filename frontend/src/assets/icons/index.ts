@@ -1,0 +1,8 @@
+export { default as camera } from './camera.png'
+export { default as homeActive } from './home-active.png'
+export { default as home } from './home.png'
+export { default as mineActive } from './mine-active.png'
+export { default as mine } from './mine.png'
+export { default as pictures } from './pictures.png'
+export { default as recordActive } from './record-active.png'
+export { default as record } from './record.png'

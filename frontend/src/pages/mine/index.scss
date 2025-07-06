@@ -1,0 +1,48 @@
+.mine-page {
+  display: flex;
+  flex-direction: column;
+  background-color: #f6f8fa;
+  min-height: 100vh;
+  padding: 40rpx 30rpx;
+}
+
+/* 用户信息部分 */
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 40rpx;
+  background: #ffffff;
+  padding: 30rpx;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  margin-right: 30rpx;
+  background-color: #ddd;
+}
+
+.nickname {
+  font-size: 32rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+/* 菜单项 */
+.menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.menu-item {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  font-size: 28rpx;
+  color: #333;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.03);
+}
