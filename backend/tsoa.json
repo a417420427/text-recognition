@@ -6,9 +6,11 @@
     "outputDirectory": "src/dist",
     "specVersion": 3,
     "basePath": "/api",
-    "outputFile": "swagger.json"
+    "outputFile": "swagger.json",
+    "consumes": ["application/json", "multipart/form-data"]
   },
   "routes": {
-    "routesDir": "src/routes"
+    "routesDir": "src/routes",
+     "authenticationModule": "src/utils/auth.ts"
   }
 }

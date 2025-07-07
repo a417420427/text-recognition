@@ -9,13 +9,19 @@
     "build": "tsc",
     "tsoa:routes": "DEBUG=tsoa:* npx tsoa routes",
     "tsoa:spec": "tsoa spec",
-    "swagger": "npm run tsoa:spec && npm run tsoa:routes"
+    "swagger": "npm run tsoa:spec && npm run tsoa:routes",
+
+  "typeorm:migration:generate": "ts-node-dev ./node_modules/typeorm/cli.js migration:generate -d src/data-source.ts",
+  "typeorm:migration:run": "ts-node-dev ./node_modules/typeorm/cli.js migration:run -d src/data-source.ts",
+  "typeorm:migration:revert": "ts-node-dev ./node_modules/typeorm/cli.js migration:revert -d src/data-source.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@nestjs/common": "^11.1.3",
+    "@nestjs/platform-express": "^11.1.3",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.3",
     "@types/mongoose": "^5.11.97",

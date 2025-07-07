@@ -6,20 +6,32 @@ export class User {
   @PrimaryGeneratedColumn()
   id!: number
 
-  @Column({ unique: true })
-  openid!: string
 
-  @Column({ nullable: true })
-  nickname!: string
+  @Column({
+    name: "password_hash",
+    type: "varchar",
+    length: 255,
+    nullable: true,
+  })
+  passwordHash?: string;
 
-  @Column({ nullable: true, type: 'text' })
-  avatarUrl!: string
+  // @Column({ unique: true })
+  // openid?: string
+
+  @Column({ type: 'text' })
+  username?: string
+
+  // @Column({ type: 'text' })
+  // avatarUrl?: string
 
   @CreateDateColumn()
   createdAt!: Date
 
   @UpdateDateColumn()
   updatedAt!: Date
+
+  @Column({ nullable: true })
+  phone?: string
 
   @OneToMany(() => UploadRecord, (record: UploadRecord) => record.user)
   records!: UploadRecord[]

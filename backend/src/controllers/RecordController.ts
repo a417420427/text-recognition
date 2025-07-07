@@ -5,7 +5,7 @@ import { UploadRecord } from '../entities/UploadRecord'
 @Route('records')
 @Tags('Record')
 export class RecordController extends Controller {
-  @Get('/')
+  @Get('')
   public async getAll(
     @Query() userId: number
   ): Promise<UploadRecord[]> {
@@ -17,7 +17,7 @@ export class RecordController extends Controller {
     })
   }
 
-  @Post('/')
+  @Post('')
   public async uploadRecord(@Body() body: {
     userId: number
     imageUrl: string

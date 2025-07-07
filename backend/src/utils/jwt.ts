@@ -5,7 +5,7 @@ const SECRET: string = process.env.JWT_SECRET || "default_secret_key";
 
 
 interface JwtPayload {
-  id: string;
+  id: number;
   phone: string;
   iat: number;
   exp: number;

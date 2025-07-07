@@ -1,37 +1,24 @@
 /* eslint-disable jsx-quotes */
-import React, { useState } from "react";
-import { View, Image, Text, Button } from "@tarojs/components";
-import Taro from "@tarojs/taro";
-import { camera, pictures } from "@/assets/icons";
-import background from "@/assets/background.jpg";
-import "./index.scss";
+import React, { useState } from 'react';
+import { View, Image, Text, Button } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import { camera, pictures } from '@/assets/icons';
+import background from '@/assets/background.jpg';
+import ApiService from '@/service/index';
+import './index.scss';
 
 const Index: React.FC = () => {
-  const [ocrResult, setOcrResult] = useState<string>("");
+  const [ocrResult, setOcrResult] = useState<string>('');
 
   // 上传图片到后端OCR接口
   const uploadImage = async (filePath: string) => {
     try {
-      const uploadRes = await Taro.uploadFile({
-        url: "http://192.168.1.246/api/ocr/recognize", // 改成你的接口
-        filePath,
-        name: "image",
-        header: {
-          "content-type": "multipart/form-data",
-        },
-      });
-      const data = JSON.parse(uploadRes.data);
-      if (data.success) {
-        // 你可以根据接口返回格式调整
-        const texts = data.data.textDetections
-          .map((item: any) => item.DetectedText)
-          .join("\n");
-        setOcrResult(texts);
-      } else {
-        Taro.showToast({ title: "识别失败", icon: "error" });
-      }
+      const uploadRes = await ApiService.uploadFile<{
+        data: any;
+      }>('/ocr/recognize', filePath, 'image');
+      console.log(uploadRes.data);
     } catch (error) {
-      Taro.showToast({ title: "上传失败", icon: "error" });
+      Taro.showToast({ title: '上传失败', icon: 'error' });
       console.error(error);
     }
   };
@@ -40,7 +27,7 @@ const Index: React.FC = () => {
   const handleCamera = () => {
     Taro.chooseImage({
       count: 1,
-      sourceType: ["camera"],
+      sourceType: ['camera'],
       success: (res) => {
         const tempFilePath = res.tempFilePaths[0];
         uploadImage(tempFilePath);
@@ -52,7 +39,7 @@ const Index: React.FC = () => {
   const handleAlbum = () => {
     Taro.chooseImage({
       count: 1,
-      sourceType: ["album"],
+      sourceType: ['album'],
       success: (res) => {
         const tempFilePath = res.tempFilePaths[0];
         uploadImage(tempFilePath);

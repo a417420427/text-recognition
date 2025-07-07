@@ -10,6 +10,13 @@ export const authMiddleware = (
   res: Response,
   next: NextFunction
 ): void => {
+  const publicPaths = ["/login", "/auth/login-by-password", "/register"]; // 不需要鉴权的路径
+
+  if (publicPaths.includes(req.path)) {
+    return next(); // 放行
+  }
+
+
   const authHeader = req.headers.authorization;
   if (!authHeader) {
     res.status(401).json({ message: "Authorization header missing" });
@@ -25,7 +32,7 @@ export const authMiddleware = (
     const secret = process.env.JWT_SECRET || "default_secret";
     const payload = jwt.verify(token, secret) as JwtPayload;
     (req as any).user = { id: payload.userId };
-    next();  // 一定要调用 next()
+    next(); // 一定要调用 next()
   } catch (err) {
     res.status(401).json({ message: "Invalid or expired token" });
     return;

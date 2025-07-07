@@ -2,6 +2,9 @@ export default defineAppConfig({
   pages: [
     'pages/index/index',
     'pages/mine/index',
+    'pages/result/index',
+    'pages/login/index',
+    'pages/register/index',
     'pages/record/index',
   ],
   window: {
