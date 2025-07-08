@@ -9,7 +9,7 @@ interface User {
   phone?: string;
 }
 
-interface UploadRecord {
+export interface UploadRecord {
   id: number;
   user: User;
   imageUrl: string;
@@ -27,4 +27,24 @@ export async function baseRecognize(filePath: string) {
   );
 
   return uploadRes;
+}
+
+export async function getRecordById(id) {
+  return await ApiService.get<{ data: UploadRecord }>(`/records/${id}`);
+}
+
+export async function getRecordsList(param = { page: 1, size: 10 }) {
+  return await ApiService.get<{ data: { data: UploadRecord[] } }>(
+    '/records/list',
+    { data: param }
+  );
+}
+
+export async function saveRecord(id: number, resultText: string) {
+  return await ApiService.put<{ data: { resultText: string } }>(
+    '/records/' + id,
+    {
+      data: { resultText },
+    }
+  );
 }

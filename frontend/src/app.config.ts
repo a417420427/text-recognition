@@ -6,6 +6,7 @@ export default defineAppConfig({
     'pages/login/index',
     'pages/register/index',
     'pages/record/index',
+    'pages/history/index',
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -25,7 +26,7 @@ export default defineAppConfig({
         selectedIconPath: 'assets/icons/home-active.png'
       },
       {
-        pagePath: 'pages/record/index',
+        pagePath: 'pages/history/index',
         text: '历史',
         iconPath: 'assets/icons/record.png',
         selectedIconPath: 'assets/icons/record-active.png'

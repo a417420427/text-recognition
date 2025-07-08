@@ -1,45 +1,86 @@
-// src/pages/record/index.tsx
-import React, { useState } from 'react'
-import { View, Image, Text, ScrollView } from '@tarojs/components'
-import './index.scss'
+/* eslint-disable jsx-quotes */
+import React, { useEffect, useState } from 'react';
+import { View, Image, Text } from '@tarojs/components';
+import Taro, { useRouter } from '@tarojs/taro';
+import './index.scss';
+import { getRecordById, saveRecord } from '@/service/apis/recognize';
 
-interface RecordItem {
-  id: string
-  thumbnail: string
-  uploadTime: string
-  lastModified: string
-}
+const DetailPage: React.FC = () => {
+  const [ocrText, setOcrText] = useState<string>('');
+  const [imageUrl, setImageUrl] = useState<string>('');
+  const [showImage, setShowImage] = useState<boolean>(false);
 
-const RecordPage: React.FC = () => {
-  const [records, setRecords] = useState<RecordItem[]>([
-    {
-      id: '1',
-      thumbnail: 'https://your-image-url.com/thumb1.jpg',
-      uploadTime: '2025-07-05 14:23',
-      lastModified: '2025-07-05 15:02',
-    },
-    {
-      id: '2',
-      thumbnail: 'https://your-image-url.com/thumb2.jpg',
-      uploadTime: '2025-07-04 10:12',
-      lastModified: '2025-07-04 11:00',
-    },
-    // 更多数据...
-  ])
+  const router = useRouter();
 
+  console.log(router.params);
+
+  const handleCopy = () => Taro.setClipboardData({ data: ocrText });
+  const handleExport = () =>
+    Taro.showToast({ title: '导出未实现', icon: 'none' });
+  const handleShare = () => Taro.showShareMenu({});
+  const handleTranslate = () =>
+    Taro.showToast({ title: '翻译未实现', icon: 'none' });
+
+  const handleSave = () => {
+    saveRecord(Number(router.params?.id)!, ocrText).then((res) => {
+      console.log(res)
+    })
+  }
+  useEffect(() => {
+    getRecordById(router.params?.id || '').then((res) => {
+      setImageUrl(res.data.imageUrl);
+      setOcrText(res.data.resultText); // 清洗换行符
+    });
+  }, []);
   return (
-    <ScrollView className='record-page' scrollY>
-      {records.map((item) => (
-        <View className='record-card' key={item.id}>
-          <Image className='thumb' src={item.thumbnail} mode='aspectFill' />
-          <View className='info'>
-            <Text className='time'>上传时间：{item.uploadTime}</Text>
-            <Text className='time'>上次修改：{item.lastModified}</Text>
+    <View className="page">
+      {/* 背景图片区域 */}
+      <Image className="bg-image" src={imageUrl} mode="aspectFill" />
+
+      {/* 查看大图按钮 */}
+      <View className="view-full-btn" onClick={() => setShowImage(true)}>
+        <Text>查看大图</Text>
+      </View>
+
+      {/* 内容区域 */}
+      <View className="content">
+        <View className="editor">
+          <textarea
+            className="textarea"
+            value={ocrText}
+            onInput={(e) => setOcrText(e.target['value'])}
+            placeholder="识别内容为空"
+          />
+        </View>
+
+        {/* 底部操作栏 */}
+        <View className="actions">
+          <View className="btn" onClick={handleShare}>
+            分享
+          </View>
+          <View className="btn" onClick={handleExport}>
+            导出
+          </View>
+          <View className="btn" onClick={handleCopy}>
+            复制
+          </View>
+          <View className="btn" onClick={handleTranslate}>
+            翻译
+          </View>
+          <View className="btn" onClick={handleSave}>
+            保存
           </View>
         </View>
-      ))}
-    </ScrollView>
-  )
-}
+      </View>
 
-export default RecordPage
+      {/* 查看大图弹窗 */}
+      {showImage && (
+        <View className="image-modal" onClick={() => setShowImage(false)}>
+          <Image className="full-image" src={imageUrl} mode="widthFix" />
+        </View>
+      )}
+    </View>
+  );
+};
+
+export default DetailPage;

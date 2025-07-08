@@ -13,9 +13,9 @@ import dotenv from "dotenv";
 import fs from "fs";
 
 import * as TCloud from "tencentcloud-sdk-nodejs-ocr";
-import { imageSize } from "image-size";
+// import { imageSize } from "image-size";
 import { UploadRecord } from "../entities/UploadRecord";
-import {  Repository } from "typeorm";
+
 import { AppDataSource } from "../data-source";
 
 // 读取 .env
@@ -26,7 +26,6 @@ const OcrClient = TCloud.ocr.v20181119.Client;
 @Route("ocr")
 @Tags("OCR")
 export class OcrController extends Controller {
-
   private uploadRepo = AppDataSource.getRepository(UploadRecord);
   private client = new OcrClient({
     credential: {
@@ -47,11 +46,7 @@ export class OcrController extends Controller {
    * 文字识别接口，接收单张图片Base64编码，返回识别结果
    */
   @Post("recognize")
-  public async recognize(@Request() req: any): Promise<{
-    textDetections: any[];
-    imageSize: { width: number; height: number };
-    url: string;
-  }> {
+  public async recognize(@Request() req: any): Promise<UploadRecord> {
     if (!req.file) {
       this.setStatus(400);
       throw new Error("没有上传图片");
@@ -63,32 +58,25 @@ export class OcrController extends Controller {
     try {
       const buffer = fs.readFileSync(imagePath);
       const base64 = buffer.toString("base64");
-      const { width, height } = imageSize(buffer);
 
       const params = {
         ImageBase64: base64,
       };
 
-      console.log(params, file);
-
-      
       const data = await this.client.GeneralBasicOCR(params);
-     
-      const user = req.user
-       const record = this.uploadRepo.create({
-      user,
-      imageUrl: file.path, // 或者 file.filename / public URL
-      type: "GENERAL_BASIC_OCR",
-      resultText: data.TextDetections?.map((d: any) => d.DetectedText).join("\n") || "",
-    });
 
-    await this.uploadRepo.save(record);
+      const user = req.user;
+      const record = this.uploadRepo.create({
+        user,
+        imageUrl: base64, // 或者 file.filename / public URL
+        type: "GENERAL_BASIC_OCR",
+        resultText:
+          data.TextDetections?.map((d: any) => d.DetectedText).join("\n") || "",
+      });
 
-      return {
-        textDetections: data.TextDetections!,
-        imageSize: { width, height },
-        url: params.ImageBase64,
-      };
+      await this.uploadRepo.save(record);
+
+      return record;
     } catch (error: any) {
       this.setStatus(500);
 

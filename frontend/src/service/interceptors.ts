@@ -42,6 +42,7 @@ const customInterceptor = function (chain: Chain) {
   requestParams.data = realRequestParams;
 
   return chain.proceed(requestParams).then(res => {
+    console.log(res, 'rr')
     if (res.statusCode === HTTP_STATUS.AUTHENTICATE) {
       // 可选：弹个提示
       Taro.showToast({

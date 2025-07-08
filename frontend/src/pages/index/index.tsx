@@ -15,9 +15,9 @@ const Index: React.FC = () => {
   const uploadImage = async (filePath: string) => {
     try {
       const uploadRes = await baseRecognize(filePath);
-
+      console.log(uploadRes, 'rrr')
       Taro.navigateTo({
-        url: 'pages/record/index?id' + uploadRes.id,
+        url: 'pages/record/index?id=' + uploadRes.id,
       });
     } catch (error) {
       Taro.showToast({ title: '上传失败', icon: 'error' });

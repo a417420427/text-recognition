@@ -1,0 +1,36 @@
+/* src/pages/record/index.scss */
+.record-page {
+  padding: 30rpx;
+  background-color: #f8f9fb;
+  min-height: 100vh;
+}
+
+.record-card {
+  display: flex;
+  background-color: #ffffff;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+  margin-bottom: 24rpx;
+  overflow: hidden;
+}
+
+.thumb {
+  width: 200rpx;
+  height: 200rpx;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.info {
+  flex: 1;
+  padding: 24rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.time {
+  font-size: 26rpx;
+  color: #555;
+  margin-bottom: 12rpx;
+}

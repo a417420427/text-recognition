@@ -64,25 +64,27 @@ export function RegisterRoutes(app: Router) {
 
 
     
-        const argsRecordController_getAll: Record<string, TsoaRoute.ParameterSchema> = {
-                userId: {"in":"query","name":"userId","required":true,"dataType":"double"},
+        const argsRecordController_getUserRecords: Record<string, TsoaRoute.ParameterSchema> = {
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                page: {"default":1,"in":"query","name":"page","dataType":"double"},
+                size: {"default":10,"in":"query","name":"size","dataType":"double"},
         };
-        app.get('/records',
+        app.get('/records/list',
             ...(fetchMiddlewares<RequestHandler>(RecordController)),
-            ...(fetchMiddlewares<RequestHandler>(RecordController.prototype.getAll)),
+            ...(fetchMiddlewares<RequestHandler>(RecordController.prototype.getUserRecords)),
 
-            async function RecordController_getAll(request: ExRequest, response: ExResponse, next: any) {
+            async function RecordController_getUserRecords(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsRecordController_getAll, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsRecordController_getUserRecords, request, response });
 
                 const controller = new RecordController();
 
               await templateService.apiHandler({
-                methodName: 'getAll',
+                methodName: 'getUserRecords',
                 controller,
                 response,
                 next,
@@ -94,25 +96,57 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsRecordController_uploadRecord: Record<string, TsoaRoute.ParameterSchema> = {
-                body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"resultText":{"dataType":"string"},"type":{"dataType":"string"},"imageUrl":{"dataType":"string","required":true},"userId":{"dataType":"double","required":true}}},
+        const argsRecordController_getRecordById: Record<string, TsoaRoute.ParameterSchema> = {
+                id: {"in":"path","name":"id","required":true,"dataType":"double"},
         };
-        app.post('/records',
+        app.get('/records/:id',
             ...(fetchMiddlewares<RequestHandler>(RecordController)),
-            ...(fetchMiddlewares<RequestHandler>(RecordController.prototype.uploadRecord)),
+            ...(fetchMiddlewares<RequestHandler>(RecordController.prototype.getRecordById)),
 
-            async function RecordController_uploadRecord(request: ExRequest, response: ExResponse, next: any) {
+            async function RecordController_getRecordById(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsRecordController_uploadRecord, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsRecordController_getRecordById, request, response });
 
                 const controller = new RecordController();
 
               await templateService.apiHandler({
-                methodName: 'uploadRecord',
+                methodName: 'getRecordById',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsRecordController_updateResultText: Record<string, TsoaRoute.ParameterSchema> = {
+                id: {"in":"path","name":"id","required":true,"dataType":"double"},
+                body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"resultText":{"dataType":"string","required":true}}},
+                req: {"in":"request","name":"req","required":true,"dataType":"object"},
+        };
+        app.put('/records/:id',
+            ...(fetchMiddlewares<RequestHandler>(RecordController)),
+            ...(fetchMiddlewares<RequestHandler>(RecordController.prototype.updateResultText)),
+
+            async function RecordController_updateResultText(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsRecordController_updateResultText, request, response });
+
+                const controller = new RecordController();
+
+              await templateService.apiHandler({
+                methodName: 'updateResultText',
                 controller,
                 response,
                 next,
