@@ -4,8 +4,9 @@ import { View, Image, Text, Button } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { camera, pictures } from '@/assets/icons';
 import background from '@/assets/background.jpg';
-import ApiService from '@/service/index';
+
 import './index.scss';
+import { baseRecognize } from '@/service/apis/recognize';
 
 const Index: React.FC = () => {
   const [ocrResult, setOcrResult] = useState<string>('');
@@ -13,10 +14,11 @@ const Index: React.FC = () => {
   // 上传图片到后端OCR接口
   const uploadImage = async (filePath: string) => {
     try {
-      const uploadRes = await ApiService.uploadFile<{
-        data: any;
-      }>('/ocr/recognize', filePath, 'image');
-      console.log(uploadRes.data);
+      const uploadRes = await baseRecognize(filePath);
+
+      Taro.navigateTo({
+        url: 'pages/record/index?id' + uploadRes.id,
+      });
     } catch (error) {
       Taro.showToast({ title: '上传失败', icon: 'error' });
       console.error(error);
