@@ -1,6 +1,6 @@
 /* eslint-disable jsx-quotes */
-import React, { useState } from 'react';
-import { View, Image, Text, Button } from '@tarojs/components';
+import React from 'react';
+import { View, Image, Text } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { camera, pictures } from '@/assets/icons';
 import background from '@/assets/background.jpg';
@@ -9,19 +9,19 @@ import './index.scss';
 import { baseRecognize } from '@/service/apis/recognize';
 
 const Index: React.FC = () => {
-  const [ocrResult, setOcrResult] = useState<string>('');
-
   // 上传图片到后端OCR接口
   const uploadImage = async (filePath: string) => {
     try {
       const uploadRes = await baseRecognize(filePath);
-      console.log(uploadRes, 'rrr')
-      Taro.navigateTo({
-        url: 'pages/record/index?id=' + uploadRes.id,
-      });
+
+      if (uploadRes.id) {
+        Taro.navigateTo({
+          url: 'pages/record/index?id=' + uploadRes.id,
+        });
+        return
+      }
     } catch (error) {
       Taro.showToast({ title: '上传失败', icon: 'error' });
-      console.error(error);
     }
   };
 
@@ -93,14 +93,6 @@ const Index: React.FC = () => {
             <Text className="text">表格/发票/营业执照识别</Text>
           </View>
         </View>
-
-        {/* 显示识别结果 */}
-        {ocrResult && (
-          <View className="ocr-result">
-            <Text className="result-title">识别结果：</Text>
-            <Text className="result-text">{ocrResult}</Text>
-          </View>
-        )}
       </View>
     </View>
   );

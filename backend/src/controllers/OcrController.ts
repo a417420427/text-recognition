@@ -17,6 +17,7 @@ import * as TCloud from "tencentcloud-sdk-nodejs-ocr";
 import { UploadRecord } from "../entities/UploadRecord";
 
 import { AppDataSource } from "../data-source";
+import { TencentCosFileService } from "../services/TencentCosFileService";
 
 // 读取 .env
 const config = dotenv.config().parsed || {};
@@ -63,12 +64,18 @@ export class OcrController extends Controller {
         ImageBase64: base64,
       };
 
+      const user = req.user;
+
       const data = await this.client.GeneralBasicOCR(params);
 
-      const user = req.user;
+      console.log(file, 'fffffffffff')
+      file.buffer = buffer
+      const fileService = new TencentCosFileService();
+      const uploaded = await fileService.saveUploadedFile(file, req.user.id);
+      
       const record = this.uploadRepo.create({
         user,
-        imageUrl: base64, // 或者 file.filename / public URL
+        imageUrl: uploaded.url, // 或者 file.filename / public URL
         type: "GENERAL_BASIC_OCR",
         resultText:
           data.TextDetections?.map((d: any) => d.DetectedText).join("\n") || "",

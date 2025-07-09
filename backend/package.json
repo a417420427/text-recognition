@@ -10,10 +10,9 @@
     "tsoa:routes": "DEBUG=tsoa:* npx tsoa routes",
     "tsoa:spec": "tsoa spec",
     "swagger": "npm run tsoa:spec && npm run tsoa:routes",
-
-  "typeorm:migration:generate": "ts-node-dev ./node_modules/typeorm/cli.js migration:generate -d src/data-source.ts",
-  "typeorm:migration:run": "ts-node-dev ./node_modules/typeorm/cli.js migration:run -d src/data-source.ts",
-  "typeorm:migration:revert": "ts-node-dev ./node_modules/typeorm/cli.js migration:revert -d src/data-source.ts"
+    "typeorm:migration:generate": "ts-node-dev ./node_modules/typeorm/cli.js migration:generate -d src/data-source.ts",
+    "typeorm:migration:run": "ts-node-dev ./node_modules/typeorm/cli.js migration:run -d src/data-source.ts",
+    "typeorm:migration:revert": "ts-node-dev ./node_modules/typeorm/cli.js migration:revert -d src/data-source.ts"
   },
   "keywords": [],
   "author": "",
@@ -46,6 +45,7 @@
     "ts-node-dev": "^2.0.0",
     "tsoa": "^6.6.0",
     "typeorm": "^0.3.24",
+    "uuid": "^11.1.0",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {

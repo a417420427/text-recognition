@@ -18,6 +18,9 @@ const RecordPage: React.FC = () => {
   }, []);
 
   const onViewRecord = (record: UploadRecord) => {
+    if(!record.id) {
+      return
+    }
     Taro.navigateTo({
       url: `/pages/record/index?id=${record.id}`,
     });
